@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-#authentication-modal {
+.edit-modal {
   margin-left: 30rem;
 }
-
-/* #authentication-modal > div {
-} */

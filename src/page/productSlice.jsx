@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-export const postSlice = createSlice({
-  name: "post",
+export const productSlice = createSlice({
+  name: "product",
   initialState: {
     data: [],
     loading: false,
@@ -61,7 +61,7 @@ export const postSlice = createSlice({
   },
 });
 
-console.log(postSlice.actions, postSlice.reducer);
+console.log(productSlice.actions, productSlice.reducer);
 export const {
   requestStarted,
   requestFailed,
@@ -71,5 +71,5 @@ export const {
   editId,
   addId,
   getId,
-} = postSlice.actions;
-export default postSlice.reducer;
+} = productSlice.actions;
+export default productSlice.reducer;

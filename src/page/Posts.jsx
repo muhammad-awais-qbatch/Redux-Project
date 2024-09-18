@@ -5,10 +5,13 @@ import NumberInputLabel from "../components/NumberInputLabel";
 import NumberInput from "../components/NumberInput";
 import FunctionButton from "../components/FunctionButton";
 import Table from "../components/Table";
-import React from "react";
+import React, { useEffect } from "react";
+import Pagination from "../components/Pagination";
+import { edits, deletes, editId, addId, getId } from "../page/postSlice";
 
 function fetchData() {
   return async (dispatch, page_size = 10, page_number = 1) => {
+    console.log("call");
     let response;
     try {
       dispatch(requestStarted());
@@ -22,6 +25,7 @@ function fetchData() {
         .then((res) => res.json())
         .then((res) => {
           dispatch(requestSucceeded(res.posts));
+          console.log(res);
         });
     } catch (error) {
       dispatch(requestFailed(error.message));
@@ -31,10 +35,18 @@ function fetchData() {
 }
 
 export default function Posts() {
-  const { loading, success, error, data } = useSelector((state) => state.post);
+  // console.log("1")
+  const { loading, success, error, data, id } = useSelector(
+    (state) => state.post
+  );
   const dispatch = useDispatch();
   var pageSizeId = `page_size`;
   var pageNumberId = `page_number`;
+  useEffect(() => {
+    if (!loading && success === null) {
+      fetchData()(dispatch, 10, 1);
+    }
+  }, []);
   return (
     <>
       <NumberInputLabel for={pageSizeId} text="Enter Page Size:" />
@@ -49,16 +61,24 @@ export default function Posts() {
           fetchData()(dispatch, pageSize, pageNumber);
         }}
       />
-      <RenderIf
-        isTrue={loading === true}
-        fallback={
-          <RenderIf isTrue={success} fallback={<h1>{error}</h1>}>
-            {/* <div>{data?.map((post) => post?.id + " -> ")}</div> */}
-            <Table data={data} dispatch={dispatch} />
-          </RenderIf>
-        }
-      >
-        <h1>Loading</h1>
+      <RenderIf isTrue={!loading} fallback={<h1>Loading</h1>}>
+        <RenderIf isTrue={success} fallback={<h1>{error}</h1>}>
+          <Table
+            data={data}
+            dispatch={dispatch}
+            restrict={["userId", "reactions"]}
+            numeric={["id", "views"]}
+            uneditable={"id"}
+            edits={edits}
+            deletes={deletes}
+            id={id}
+            editId={editId}
+            addId={addId}
+            getId={getId}
+            headline="Posts"
+          />
+          <Pagination />
+        </RenderIf>
       </RenderIf>
     </>
   );

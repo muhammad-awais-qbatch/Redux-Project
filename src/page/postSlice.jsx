@@ -7,6 +7,7 @@ export const postSlice = createSlice({
     success: null,
     error: null,
     id: 0,
+    total: 0,
   },
   reducers: {
     requestStarted(state) {
@@ -58,6 +59,9 @@ export const postSlice = createSlice({
       state.data[state.id] = action.payload;
       state.id = 0;
     },
+    setTotal(state, action) {
+      state.total = action.payload;
+    },
   },
 });
 
@@ -71,5 +75,6 @@ export const {
   editId,
   addId,
   getId,
+  setTotal,
 } = postSlice.actions;
 export default postSlice.reducer;

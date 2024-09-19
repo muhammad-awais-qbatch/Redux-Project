@@ -49,8 +49,8 @@ export default function Products() {
     (state) => state.product
   );
   const dispatch = useDispatch();
-  var pageSizeId = `page_size`;
-  var pageNumberId = `page_number`;
+  // var pageSizeId = `page_size`;
+  // var pageNumberId = `page_number`;
   const [pageSize, setPageSize] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
   // let pageSize = 10;
@@ -60,10 +60,10 @@ export default function Products() {
       fetchData()(dispatch, pageSize, pageNumber);
     }
   }, []);
-  console.log("Total: ", data);
+  // console.log("Total: ", data);
   return (
     <>
-      {/* <h1>Products</h1> */}
+      {/* <h1>Products</h1>
       <NumberInputLabel for={pageSizeId} text="Enter Page Size:" />
       <NumberInput id={pageSizeId} value="10" />
       <NumberInputLabel for={pageNumberId} text="Enter Page Number:" />
@@ -75,7 +75,7 @@ export default function Products() {
           // let pageNumber = document.getElementById(pageNumberId).value;
           fetchData()(dispatch, pageSize, pageNumber);
         }}
-      />
+      /> */}
       <RenderIf
         isTrue={loading === true}
         fallback={

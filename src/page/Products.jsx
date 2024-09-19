@@ -8,13 +8,14 @@ import {
   editId,
   addId,
   getId,
+  setTotal,
 } from "./productSlice";
 import RenderIf from "../components/RenderIf";
 import NumberInputLabel from "../components/NumberInputLabel";
 import NumberInput from "../components/NumberInput";
 import FunctionButton from "../components/FunctionButton";
 import Table from "../components/Table";
-import React from "react";
+import React, { useState } from "react";
 import Pagination from "../components/Pagination";
 import { useEffect } from "react";
 
@@ -33,6 +34,7 @@ function fetchData() {
         .then((res) => res.json())
         .then((res) => {
           dispatch(requestSucceeded(res.products));
+          dispatch(setTotal(res.total));
           console.log(res);
         });
     } catch (error) {
@@ -43,17 +45,22 @@ function fetchData() {
 }
 
 export default function Products() {
-  const { loading, success, error, data, id } = useSelector(
+  const { loading, success, error, data, id, total } = useSelector(
     (state) => state.product
   );
   const dispatch = useDispatch();
   var pageSizeId = `page_size`;
   var pageNumberId = `page_number`;
+  const [pageSize, setPageSize] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
+  // let pageSize = 10;
+  // let pageNumber = 1;
   useEffect(() => {
     if (!loading && success === null) {
-      fetchData()(dispatch, 10, 1);
+      fetchData()(dispatch, pageSize, pageNumber);
     }
   }, []);
+  console.log("Total: ", data);
   return (
     <>
       {/* <h1>Products</h1> */}
@@ -64,8 +71,8 @@ export default function Products() {
       <FunctionButton
         text="Fetch"
         func={() => {
-          let pageSize = document.getElementById(pageSizeId).value;
-          let pageNumber = document.getElementById(pageNumberId).value;
+          // let pageSize = document.getElementById(pageSizeId).value;
+          // let pageNumber = document.getElementById(pageNumberId).value;
           fetchData()(dispatch, pageSize, pageNumber);
         }}
       />
@@ -109,7 +116,15 @@ export default function Products() {
               getId={getId}
               headline="Products"
             />
-            <Pagination />
+            <Pagination
+              fetch={fetchData}
+              dispatch={dispatch}
+              total={total}
+              pageSize={pageSize}
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+              data={data}
+            />
           </RenderIf>
         }
       >

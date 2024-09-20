@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-export const postSlice = createSlice({
+export const PostSlice = createSlice({
   name: "post",
   initialState: {
     data: [],
@@ -27,7 +27,6 @@ export const postSlice = createSlice({
       state.success = true;
     },
     edits(state, action) {
-      // console.log(action.payload);
       state.data = state.data.map((val) => {
         if (val.id === state.id) {
           return action.payload;
@@ -35,9 +34,7 @@ export const postSlice = createSlice({
           return val;
         }
       });
-      // // console.log(state.data, state.id, state.success);
       state.id = 0;
-      // console.log("Edit called.");
     },
     deletes(state, action) {
       console.log(action.payload, state.data);
@@ -65,7 +62,6 @@ export const postSlice = createSlice({
   },
 });
 
-console.log(postSlice.actions, postSlice.reducer);
 export const {
   requestStarted,
   requestFailed,
@@ -76,5 +72,5 @@ export const {
   addId,
   getId,
   setTotal,
-} = postSlice.actions;
-export default postSlice.reducer;
+} = PostSlice.actions;
+export default PostSlice.reducer;

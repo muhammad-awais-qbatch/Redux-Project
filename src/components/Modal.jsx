@@ -4,6 +4,33 @@ import CrossSvg from "./CrossSvg";
 import { useEffect, useState } from "react";
 import RenderIf from "./RenderIf";
 
+function handleForm(e, props) {
+  // (e) => {
+  e.preventDefault();
+  props.text === "Create"
+    ? props.dispatch(
+        props.addId(
+          Object.fromEntries(
+            props.keys.map((key) => [
+              key,
+              document.getElementById(key).value || props.value[key] || 0,
+            ])
+          )
+        )
+      )
+    : props.dispatch(
+        props.edits(
+          Object.fromEntries(
+            props.keys.map((key) => [
+              key,
+              document.getElementById(key).value || props.value[key],
+            ])
+          )
+        )
+      );
+  // };
+}
+
 function FormElement(props) {
   const [state, setState] = useState(props.value[props.index]);
 
@@ -77,36 +104,7 @@ export default function Modal(props) {
               </button>
             </div>
             <div class="p-4 md:p-5">
-              <form
-                class="space-y-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  props.text === "Create"
-                    ? props.dispatch(
-                        props.addId(
-                          Object.fromEntries(
-                            props.keys.map((key) => [
-                              key,
-                              document.getElementById(key).value ||
-                                props.value[key] ||
-                                0,
-                            ])
-                          )
-                        )
-                      )
-                    : props.dispatch(
-                        props.edits(
-                          Object.fromEntries(
-                            props.keys.map((key) => [
-                              key,
-                              document.getElementById(key).value ||
-                                props.value[key],
-                            ])
-                          )
-                        )
-                      );
-                }}
-              >
+              <form class="space-y-4" onSubmit={(e) => handleForm(e, props)}>
                 <div>
                   {props.keys.map((key, index) => (
                     <FormElement

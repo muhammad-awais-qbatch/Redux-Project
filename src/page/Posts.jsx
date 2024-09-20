@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
-import { requestStarted, requestFailed, requestSucceeded } from "./postSlice";
+import { requestStarted, requestFailed, requestSucceeded } from "./PostSlice";
 import RenderIf from "../components/RenderIf";
-import NumberInputLabel from "../components/NumberInputLabel";
-import NumberInput from "../components/NumberInput";
-import FunctionButton from "../components/FunctionButton";
+// import NumberInputLabel from "../components/NumberInputLabel";
+// import NumberInput from "../components/NumberInput";
+// import FunctionButton from "../components/FunctionButton";
 import Table from "../components/Table";
 import React, { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
@@ -14,10 +14,11 @@ import {
   addId,
   getId,
   setTotal,
-} from "../page/postSlice";
+} from "./PostSlice";
 
-function fetchData() {
-  return async (dispatch, page_size = 10, page_number = 1) => {
+const fetchData =
+  () =>
+  async (dispatch, page_size = 10, page_number = 1) => {
     console.log("call");
     let response;
     try {
@@ -40,7 +41,6 @@ function fetchData() {
       return;
     }
   };
-}
 
 export default function Posts() {
   // console.log("1")
@@ -53,9 +53,7 @@ export default function Posts() {
   const [pageSize, setPageSize] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
   useEffect(() => {
-    if (!loading && success === null) {
-      fetchData()(dispatch, 10, 1);
-    }
+    !loading && success === null && fetchData()(dispatch, 10, 1);
   }, []);
   return (
     <>

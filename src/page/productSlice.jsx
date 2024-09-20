@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-export const productSlice = createSlice({
-  name: "product",
+export const ProductSlice = createSlice({
+  name: "Product",
   initialState: {
     data: [],
     loading: false,
@@ -27,7 +27,6 @@ export const productSlice = createSlice({
       state.success = true;
     },
     edits(state, action) {
-      // console.log(action.payload);
       state.data = state.data.map((val) => {
         if (val.id === state.id) {
           return action.payload;
@@ -35,9 +34,7 @@ export const productSlice = createSlice({
           return val;
         }
       });
-      // // console.log(state.data, state.id, state.success);
       state.id = 0;
-      // console.log("Edit called.");
     },
     deletes(state, action) {
       console.log(action.payload, state.data);
@@ -60,12 +57,11 @@ export const productSlice = createSlice({
       state.id = 0;
     },
     setTotal(state, action) {
-      state.total = action.payload
-    }
+      state.total = action.payload;
+    },
   },
 });
 
-console.log(productSlice.actions, productSlice.reducer);
 export const {
   requestStarted,
   requestFailed,
@@ -75,6 +71,6 @@ export const {
   editId,
   addId,
   getId,
-  setTotal
-} = productSlice.actions;
-export default productSlice.reducer;
+  setTotal,
+} = ProductSlice.actions;
+export default ProductSlice.reducer;

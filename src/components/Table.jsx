@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import "flowbite";
 import RenderIf from "./RenderIf";
 
-function TrTh(props) {
+const TrTh = (props) => {
   return (
     <tr class="border-b">
       {props.keys.map((val) => (
@@ -11,8 +11,8 @@ function TrTh(props) {
       ))}
     </tr>
   );
-}
-function TrTd(props) {
+};
+const TrTd = (props) => {
   return (
     <tr class="border-b hover:bg-orange-100 bg-gray-100">
       {props.value.map((val) => (
@@ -42,9 +42,9 @@ function TrTd(props) {
       </td>
     </tr>
   );
-}
+};
 
-function TableData(props) {
+const TableData = (props) => {
   return (
     <>
       <TrTh keys={props.keys.concat(["Edit", "Delete"])} />
@@ -60,8 +60,18 @@ function TableData(props) {
       ))}
     </>
   );
+};
+
+const getModalValue = (props) => {
+  return Object.values(
+    Object.fromEntries(
+      Object.entries(
+        props.data.filter((val) => val.id === props.id)[0] || {}
+      ).filter(([k]) => !props.restrict.includes(k))
+    )
+  )
 }
-export default function Table(props) {
+const Table = (props) => {
   let keys = Object.keys(props.data[0]).filter(
     (val) => !props.restrict.includes(val)
   );
@@ -97,13 +107,7 @@ export default function Table(props) {
             id={props.id}
             edits={props.edits}
             keys={keys}
-            value={Object.values(
-              Object.fromEntries(
-                Object.entries(
-                  props.data.filter((val) => val.id === props.id)[0] || {}
-                ).filter(([k]) => !props.restrict.includes(k))
-              )
-            )}
+            value={getModalValue(props)}
             dispatch={props.dispatch}
             editId={props.editId}
             addId={props.addId}
@@ -119,4 +123,6 @@ export default function Table(props) {
       </div>
     </div>
   );
-}
+};
+
+export default Table
